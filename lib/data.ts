@@ -6,6 +6,7 @@ export interface Product {
   type: 'tops' | 'bottoms' | 'jackets' | 'dresses' | 'skirts' | 'accessories' | 'jeans';
   image: string;
   description: string;
+  selectedSize?: string;
 }
 
 export const CATEGORIES = [

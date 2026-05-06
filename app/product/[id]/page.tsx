@@ -19,6 +19,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const { addToCart } = useCart();
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedSize, setSelectedSize] = useState<string>('');
 
   useEffect(() => {
     async function fetchProduct() {
@@ -147,7 +148,15 @@ export default function ProductPage({ params }: ProductPageProps) {
                    <h4 className="text-[10px] font-black uppercase tracking-widest text-black/30">Select Size</h4>
                    <div className="flex gap-3">
                       {['S', 'M', 'L', 'XL'].map(size => (
-                        <button key={size} className="w-12 h-12 rounded-full border border-bento-line flex items-center justify-center text-xs font-bold hover:border-black transition-colors focus:bg-black focus:text-white">
+                        <button
+                          key={size}
+                          onClick={() => setSelectedSize(size)}
+                          className={`w-12 h-12 rounded-full border flex items-center justify-center text-xs font-bold transition-colors ${
+                            selectedSize === size
+                              ? 'bg-black text-white border-black'
+                              : 'border-bento-line hover:border-black'
+                          }`}
+                        >
                           {size}
                         </button>
                       ))}
@@ -155,13 +164,19 @@ export default function ProductPage({ params }: ProductPageProps) {
                 </div>
               </div>
 
-              <button 
-                onClick={() => addToCart(product)}
-                className="w-full bg-black text-white rounded-full py-6 flex items-center justify-center gap-3 font-black uppercase tracking-[0.2em] text-xs hover:bg-black/80 transition-all group"
-              >
-                <span>Add to bag</span>
-                <ShoppingBag size={16} className="group-hover:scale-110 transition-transform" />
-              </button>
+               <button
+                 onClick={() => {
+                   if (!selectedSize) {
+                     alert('Please select a size first.');
+                     return;
+                   }
+                   addToCart({ ...product, selectedSize });
+                 }}
+                 className="w-full bg-black text-white rounded-full py-6 flex items-center justify-center gap-3 font-black uppercase tracking-[0.2em] text-xs hover:bg-black/80 transition-all group"
+               >
+                 <span>Add to bag</span>
+                 <ShoppingBag size={16} className="group-hover:scale-110 transition-transform" />
+               </button>
 
               {/* Service features - Bento Card Style */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">

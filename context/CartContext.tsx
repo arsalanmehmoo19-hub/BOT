@@ -5,6 +5,7 @@ import { Product } from '@/lib/data';
 
 interface CartItem extends Product {
   quantity: number;
+  selectedSize?: string;
 }
 
 interface CartContextType {

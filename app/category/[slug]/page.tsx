@@ -16,7 +16,7 @@ interface CategoryPageProps {
 export default function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = use(params);
   const searchParams = useSearchParams();
-  const typeFilter = searchParams.get('type');
+  const typeFilter = searchParams?.get('type') || null;
   
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

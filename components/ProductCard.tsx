@@ -6,25 +6,40 @@ import Image from 'next/image';
 import { useCart } from '@/context/CartContext';
 import { Plus } from 'lucide-react';
 
+import { Product } from '@/lib/data';
+
 interface ProductCardProps {
-  product: any; // Allow dynamic structure from Supabase
+  product: Product & {
+    image?: string | null;
+    product_images?: Array<{ image_url: string }>;
+  };
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
 
+  // Handle image - could be a string (legacy) or from product_images array
+  const imageUrl =
+    product.image ||
+    (product.product_images && product.product_images.length > 0
+      ? product.product_images[0].image_url
+      : null);
+
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       className="group"
     >
       <div className="relative aspect-[4/5] overflow-hidden bg-white rounded-[24px] border border-bento-line">
-        <Link href={`/product/${product.id}`} className="absolute inset-0 block bg-gray-100">
-          {product.image ? (
+        <Link
+          href={`/product/${product.id}`}
+          className="absolute inset-0 block bg-gray-100"
+        >
+          {imageUrl ? (
             <Image
-              src={product.image}
+              src={imageUrl}
               alt={product.name}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -40,16 +55,16 @@ export default function ProductCard({ product }: ProductCardProps) {
           ${product.price}
         </div>
         <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/5 pointer-events-none" />
-        
+
         {/* Quick Add */}
-        <button 
+        <button
           onClick={() => addToCart(product)}
           className="absolute bottom-4 right-4 w-10 h-10 bg-black text-white rounded-full flex items-center justify-center opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 shadow-lg hover:scale-110 active:scale-95"
         >
           <Plus size={18} />
         </button>
       </div>
-      
+
       <Link href={`/product/${product.id}`}>
         <div className="mt-6 flex flex-col gap-1 px-2">
           <h3 className="text-sm font-bold uppercase tracking-tight text-bento-ink">
