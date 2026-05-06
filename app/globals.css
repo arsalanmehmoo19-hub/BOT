@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui;
+  --font-display: var(--font-display), ui-sans-serif, system-ui;
+  --font-script: var(--font-script), cursive;
+  
+  --color-bento-bg: #F4F4F2;
+  --color-bento-ink: #1A1A1A;
+  --color-bento-card: #FFFFFF;
+  --color-bento-line: #E5E5E1;
+  --color-bento-accent: #FF5F1F;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bento-bg);
+    color: var(--color-bento-ink);
+  }
+}
